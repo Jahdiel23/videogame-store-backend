@@ -33,7 +33,7 @@ public class CompraProducto {
             insertable = false,
             updatable = false
     )
-    private Producto producto;
+    private Videojuego producto;
 
     public CompraProducto() {
     }
@@ -99,11 +99,11 @@ public class CompraProducto {
         this.compra = compra;
     }
 
-    public Producto getProducto() {
+    public Videojuego getProducto() {
         return producto;
     }
 
-    public void setProducto(Producto producto) {
+    public void setProducto(Videojuego producto) {
         this.producto = producto;
     }
 }
