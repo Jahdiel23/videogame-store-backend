@@ -13,15 +13,17 @@ public class Compra {
     @Column(name = "id_compra")
     private Integer idCompra;
 
-    @Column(name = "id_cliente")
+    @Column(name = "id_cliente", length = 20)
     private String idCliente;
 
     private LocalDateTime fecha;
 
-    @Column(name = "medio_pago")
+    @Column(name = "medio_pago", length = 20)
     private String medioPago;
 
+    @Column(length = 500)
     private String comentario;
+    @Column(length = 20)
     private String estado;
 
     @ManyToOne

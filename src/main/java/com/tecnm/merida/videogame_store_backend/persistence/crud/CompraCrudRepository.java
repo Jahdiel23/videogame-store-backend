@@ -1,14 +1,8 @@
 package com.tecnm.merida.videogame_store_backend.persistence.crud;
 
 import com.tecnm.merida.videogame_store_backend.persistence.entity.Compra;
-
-import org.springframework.data.repository.CrudRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
-import java.util.Optional;
-
-public interface CompraCrudRepository
-        extends CrudRepository<Compra, Integer> {
-
-    Optional<List<Compra>> findByIdCliente(String idCliente);
+public interface CompraCrudRepository extends JpaRepository<Compra, Integer> {
+    List<Compra> findByIdCliente(String idCliente);
 }

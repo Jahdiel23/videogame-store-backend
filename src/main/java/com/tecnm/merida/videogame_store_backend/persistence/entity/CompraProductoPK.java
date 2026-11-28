@@ -4,9 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class CompraProductoPK implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "id_compra")
     private Integer idCompra;
@@ -37,4 +39,12 @@ public class CompraProductoPK implements Serializable {
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
     }
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof CompraProductoPK that)) return false;
+        return Objects.equals(idCompra, that.idCompra) && Objects.equals(idProducto, that.idProducto);
+    }
+    @Override
+    public int hashCode() { return Objects.hash(idCompra, idProducto); }
 }

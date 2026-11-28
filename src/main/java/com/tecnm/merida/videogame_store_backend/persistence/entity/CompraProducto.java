@@ -2,6 +2,7 @@ package com.tecnm.merida.videogame_store_backend.persistence.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "compras_productos")
@@ -13,8 +14,8 @@ public class CompraProducto {
     @Column(name = "cantidad")
     private Integer cantidad;
 
-    @Column(name = "total")
-    private Double total;
+    @Column(name = "total", precision = 18, scale = 2)
+    private BigDecimal total;
 
     @Column(name = "estado")
     private Boolean estado;
@@ -35,13 +36,19 @@ public class CompraProducto {
     )
     private Videojuego producto;
 
+    @Column(name = "precio_unitario", precision = 12, scale = 2)
+    private BigDecimal precioUnitario;
+
+    public BigDecimal getPrecioUnitario() { return precioUnitario; }
+    public void setPrecioUnitario(BigDecimal precioUnitario) { this.precioUnitario = precioUnitario; }
+
     public CompraProducto() {
     }
 
     public CompraProducto(
             CompraProductoPK id,
             Integer cantidad,
-            Double total,
+            BigDecimal total,
             Boolean estado,
             LocalDateTime fecha) {
         this.id = id;
@@ -67,11 +74,11 @@ public class CompraProducto {
         this.cantidad = cantidad;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

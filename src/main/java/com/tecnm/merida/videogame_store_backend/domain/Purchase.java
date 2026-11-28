@@ -2,6 +2,8 @@ package com.tecnm.merida.videogame_store_backend.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Purchase {
 
@@ -67,5 +69,10 @@ public class Purchase {
 
     public void setItems(List<PurchaseItem> items) {
         this.items = items;
+    }
+    public BigDecimal getTotal() {
+        if (items == null) return BigDecimal.ZERO.setScale(2);
+        return items.stream().map(PurchaseItem::getTotal).filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2);
     }
 }

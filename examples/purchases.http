@@ -1,0 +1,76 @@
+@baseUrl = http://localhost:8081
+@token = PASTE_YOUR_TOKEN_HERE
+# Replace all IDs with the IDs actually returned by your local API.
+@consoleId = 1
+@firstGameId = 1
+@secondGameId = 2
+@purchaseId = 1
+
+### Create a console if you need test inventory
+POST {{baseUrl}}/consoles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"name":"Nintendo Switch","manufacturer":"Nintendo","active":true}
+
+### Create game A; update firstGameId with its response ID
+POST {{baseUrl}}/videogames
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title":"Super Mario Odyssey","consoleId":{{consoleId}},"genre":"Plataformas","price":899.00,"stock":10,"active":true}
+
+### Create game B; update secondGameId with its response ID
+POST {{baseUrl}}/videogames
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title":"Zelda Tears of the Kingdom","consoleId":{{consoleId}},"genre":"Aventura","price":1299.00,"stock":10,"active":true}
+
+### Create the purchase (201; expected total 3097.00)
+POST {{baseUrl}}/purchases
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "clientId":"2",
+  "paymentMethod":"CASH",
+  "comment":"Prueba maestro-detalle",
+  "items":[
+    {"videogameId":{{firstGameId}},"quantity":2},
+    {"videogameId":{{secondGameId}},"quantity":1}
+  ]
+}
+
+### Read saved purchase and both details
+GET {{baseUrl}}/purchases/{{purchaseId}}
+Authorization: Bearer {{token}}
+
+### List purchases
+GET {{baseUrl}}/purchases
+Authorization: Bearer {{token}}
+
+### Client purchases
+GET {{baseUrl}}/purchases/client/2
+Authorization: Bearer {{token}}
+
+### Expected 409. No purchase/details/stock changes should survive.
+POST {{baseUrl}}/purchases
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"clientId":"2","paymentMethod":"CASH","items":[{"videogameId":{{firstGameId}},"quantity":1},{"videogameId":{{secondGameId}},"quantity":1000}]}
+
+### Expected 400: missing quantity
+POST {{baseUrl}}/purchases
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"clientId":"2","paymentMethod":"CASH","items":[{"videogameId":{{firstGameId}}]}
+
+### Expected 404: nonexistent game ID (choose an ID absent from your own catalog)
+POST {{baseUrl}}/purchases
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"clientId":"2","paymentMethod":"CASH","items":[{"videogameId":999999,"quantity":1}]}
